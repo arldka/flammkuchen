@@ -1,0 +1,13 @@
+package components    
+
+import (
+    "github.com/arldka/flammkuchen/internal/types"
+)
+
+templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRelease ) {
+    <div id="objects-list" class="bg-white p-4 rounded shadow-md">
+    for _, helmrelease := range helmreleases {
+      <div class="p-2 border-b border-gray-200">{ helmrelease.Name } { helmrelease.Namespace } { helmrelease.Status } { helmrelease.Age }</div>
+    }
+    </div>
+}
