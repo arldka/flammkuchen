@@ -39,7 +39,7 @@ func Index(serverVersion string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></header><div class=\"bg-white p-4 rounded shadow-md mb-6\"><input id=\"search\" name=\"q\" type=\"text\" placeholder=\"Search kustomizations...\" class=\"w-full p-2 border border-gray-300 rounded mb-4\" hx-get=\"/search\" hx-trigger=\"load input changed delay:500ms\" hx-target=\"#object-list\"></div><div id=\"object-list\" class=\"bg-white p-4 rounded shadow-md\"></div></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></header><div class=\"bg-white p-4 rounded shadow-md mb-6\" hx-get=\"/search\" hx-trigger=\"load\" hx-target=\"#object-list\"><input id=\"search\" name=\"q\" type=\"text\" placeholder=\"Search kustomizations...\" class=\"w-full p-2 border border-gray-300 rounded mb-4\" hx-get=\"/search\" hx-trigger=\"input changed delay:500ms\" hx-target=\"#object-list\"></div><div id=\"object-list\" class=\"bg-white p-4 rounded shadow-md\"></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

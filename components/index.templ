@@ -17,8 +17,8 @@ templ Index(serverVersion string) {
         <h1 class="text-2xl font-bold">Cluster Interface</h1>
         <p class="text-gray-600">Version: { serverVersion } </p>
       </header>
-      <div class="bg-white p-4 rounded shadow-md mb-6">
-        <input id="search" name="q" type="text" placeholder="Search kustomizations..." class="w-full p-2 border border-gray-300 rounded mb-4" hx-get="/search" hx-trigger="load input changed delay:500ms" hx-target="#object-list">
+      <div class="bg-white p-4 rounded shadow-md mb-6" hx-get="/search" hx-trigger="load" hx-target="#object-list">
+        <input id="search" name="q" type="text" placeholder="Search kustomizations..." class="w-full p-2 border border-gray-300 rounded mb-4" hx-get="/search" hx-trigger="input changed delay:500ms" hx-target="#object-list">
       </div>
 
       <div id="object-list" class="bg-white p-4 rounded shadow-md"></div>
