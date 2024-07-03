@@ -2,6 +2,7 @@ package k8sclient
 
 import (
 	"os"
+  "fmt"
   "path/filepath"
   "k8s.io/client-go/tools/clientcmd"
   "k8s.io/client-go/kubernetes"
@@ -18,6 +19,8 @@ var (
 )
 
 func init() {
+  Clientset, DynamicClient, DiscoveryClient = initClients()
+  fmt.Println("K8s clients initialized")
 }
 
 func initClients() (*kubernetes.Clientset, *dynamic.DynamicClient, *discovery.DiscoveryClient) {

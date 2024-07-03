@@ -9,5 +9,8 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
     for _, helmrelease := range helmreleases {
       <div class="p-2 border-b border-gray-200">{ helmrelease.Name } { helmrelease.Namespace } { helmrelease.Status } { helmrelease.Age }</div>
     }
+    for _, Kustomization := range kustomizations {
+      <div class="p-2 border-b border-gray-200">{ Kustomization.Name } { Kustomization.Namespace } { Kustomization.Status } { Kustomization.Age }</div>
+    }
     </div>
 }

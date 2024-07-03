@@ -2,6 +2,7 @@ package resources
 
 import (
 	"context"
+  "fmt"
 	"github.com/arldka/flammkuchen/internal/types"
 	"github.com/arldka/flammkuchen/services/k8sclient"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -9,6 +10,7 @@ import (
 )
 
 func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
+  fmt.Println("I was here")
   var kustomizationList []types.Kustomization
   kustomizationGVR := schema.GroupVersionResource{
     Group: "kustomize.toolkit.fluxcd.io",

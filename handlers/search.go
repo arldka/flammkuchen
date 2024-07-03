@@ -2,9 +2,8 @@ package handlers
 
 import (
 	"net/http"
-
    "github.com/arldka/flammkuchen/services/resources"
-	"github.com/arldka/flammkuchen/components"
+    "github.com/arldka/flammkuchen/components"
 )
 
 // write a handler that returns a filtered list of Kustomizations & HelmReleases based on a search query
