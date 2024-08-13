@@ -22,9 +22,12 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
           <div>
             <span class="font-semibold">{ helmrelease.Name }</span>
             <span class="text-gray-500">/{ helmrelease.Namespace }</span>
+            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+              HelmRelease
+            </span>
           </div>
           <div class="text-sm">
-            if helmrelease.Status == "Deployed" {
+            if helmrelease.Status == "Ready" {
               <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 { helmrelease.Status }
               </span>
@@ -46,6 +49,9 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
             <div>
               <span class="font-semibold">{ kustomization.Name }</span>
               <span class="text-gray-500">/{ kustomization.Namespace }</span>
+              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                Kustomization
+              </span>
             </div>
             <div class="text-sm">
               if kustomization.Status == "Ready" {

@@ -207,11 +207,11 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"text-sm\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">HelmRelease</span></div><div class=\"text-sm\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if helmrelease.Status == "Deployed" {
+			if helmrelease.Status == "Ready" {
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -219,7 +219,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 29, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 32, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -237,7 +237,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 33, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 36, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -255,7 +255,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 37, Col: 36}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 40, Col: 36}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -273,7 +273,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Age)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 40, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 43, Col: 59}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -292,7 +292,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 47, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 50, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -305,13 +305,13 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Namespace)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 48, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 51, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"text-sm\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">Kustomization</span></div><div class=\"text-sm\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -323,7 +323,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 53, Col: 40}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 59, Col: 40}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
@@ -341,7 +341,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var20 string
 				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 57, Col: 40}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 63, Col: 40}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 				if templ_7745c5c3_Err != nil {
@@ -359,7 +359,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				var templ_7745c5c3_Var21 string
 				templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Status)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 61, Col: 40}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 67, Col: 40}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 				if templ_7745c5c3_Err != nil {
@@ -377,7 +377,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Age)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 64, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 70, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
