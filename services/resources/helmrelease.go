@@ -14,7 +14,7 @@ func FilteredListHelmReleases(query string) ([]types.HelmRelease, error) {
   var helmreleaseList []types.HelmRelease
   helmreleaseGVR := schema.GroupVersionResource{
     Group: "helm.toolkit.fluxcd.io",
-    Version: "v2beta2",
+    Version: "v2",
     Resource: "helmreleases",
   }
   helmreleases, _ := k8sclient.DynamicClient.Resource(helmreleaseGVR).List(context.TODO(), metav1.ListOptions{})
