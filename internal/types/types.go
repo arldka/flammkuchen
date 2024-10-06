@@ -28,6 +28,11 @@ type Entry struct {
 
 type Objects struct {
   Generics []GenericObject
+  RBACs    []GenericObject
+  CRDs     []GenericObject
+  Workloads []GenericObject
+  Fluxes   []GenericObject
+  Networkings []GenericObject
 }
 
 type GenericObject struct {
@@ -37,4 +42,5 @@ type GenericObject struct {
   APIVersion string
   Kind string
   Status string
+  Age string
 }

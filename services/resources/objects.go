@@ -1,14 +1,47 @@
 package resources
 
 import (
-  "fmt"
-  "sync"
-  "github.com/arldka/flammkuchen/internal/types"
-  "github.com/arldka/flammkuchen/services/resources/objects"
+	"strings"
+	"sync"
+
+	"github.com/arldka/flammkuchen/internal/types"
+	"github.com/arldka/flammkuchen/services/resources/objects"
 )
 
 func ObjectType(apiGroup string, kind string) (string){
-  return "generic"
+  if apiGroup == "rbac.authorization.k8s.io" || kind == "ServiceAccount" { 
+    return "rbac"
+  } else if (apiGroup == "apiextensions.k8s.io" && kind == "CustomResourceDefinition") {
+    return "crd"
+  } else if kind == "Deployment" || kind == "StatefulSet" || kind == "DaemonSet" {
+    return "workload"
+  } else if kind == "Service" || kind == "Ingress" || kind == "Gateway" || kind == "VirtualService" || kind == "HTTPRoute" || kind == "TCPRoute" || kind == "UDPRoute" || kind == "TLSRoute" {
+    return "networking"
+  } else if strings.HasSuffix(apiGroup, "toolkit.fluxcd.io") {
+    return "flux"
+  } else {
+    return "generic"
+  }
+}
+
+// Write a function to insert an item of any type into a list sorted by its .Name attribute.
+func InsertGenericObject(objectList []types.GenericObject, newObject types.GenericObject) []types.GenericObject {
+  index := 0
+  for i, g := range objectList {
+    if g.Kind == newObject.Kind {
+      if g.Name > newObject.Name {
+        index = i
+        break
+      }
+    } else {
+      if g.Kind > newObject.Kind {
+        index = i
+        break
+      }
+    }
+  }
+  objectList = append(objectList[:index], append([]types.GenericObject{newObject}, objectList[index:]...)...)
+  return objectList
 }
 
 func GetObjects(inventory *types.Inventory) (*types.Objects, error) {
@@ -24,11 +57,45 @@ func GetObjects(inventory *types.Inventory) (*types.Objects, error) {
           object := objects.GetGeneric(entry)
           if object != nil {
             mu.Lock()
-            objectList.Generics = append(objectList.Generics, *object)
-            fmt.Println("Generic Object Added")
+            objectList.Generics = InsertGenericObject(objectList.Generics, *object)
             mu.Unlock()
           }
-        }
+        case "rbac":
+          object := objects.GetGeneric(entry)
+          if object != nil {
+            mu.Lock()
+            objectList.RBACs = InsertGenericObject(objectList.RBACs, *object)
+            mu.Unlock()
+          }
+        case "crd":
+          object := objects.GetGeneric(entry)
+          if object != nil {
+            mu.Lock()
+            objectList.CRDs = InsertGenericObject(objectList.CRDs, *object)
+            mu.Unlock()
+          }
+        case "workload":
+          object := objects.GetGeneric(entry)
+          if object != nil {
+            mu.Lock()
+            objectList.Workloads = InsertGenericObject(objectList.Workloads, *object)
+            mu.Unlock()
+          }
+        case "flux":
+          object := objects.GetGeneric(entry)
+          if object != nil {
+            mu.Lock()
+            objectList.Fluxes = InsertGenericObject(objectList.Fluxes, *object)
+            mu.Unlock()
+          }
+        case "networking":
+          object := objects.GetGeneric(entry)
+          if object != nil {
+            mu.Lock()
+            objectList.Networkings = InsertGenericObject(objectList.Networkings, *object)
+            mu.Unlock()
+          }
+      }
     }(entry)
   }
   wg.Wait()
