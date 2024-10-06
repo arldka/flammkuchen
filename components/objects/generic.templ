@@ -1,0 +1,14 @@
+package objects
+
+import (
+  "github.com/arldka/flammkuchen/internal/types"
+)
+
+templ Generic(generic types.GenericObject) {
+  <div class="flex items-center justify-between p-2 border-b border-gray-200">
+    <div class="flex items-center">
+      <div class="text-xl font-medium text-gray-800">{generic.Name}</div>
+      <div class="text-sm text-gray-500 ml-2">{generic.Kind}</div>
+    </div>
+  </div>
+}

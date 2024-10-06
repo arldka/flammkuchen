@@ -3,6 +3,7 @@ package k8sclient
 import (
 	"os"
   "fmt"
+  "time"
   "path/filepath"
   "k8s.io/client-go/tools/clientcmd"
   "k8s.io/client-go/kubernetes"
@@ -26,6 +27,7 @@ func init() {
 func initClients() (*kubernetes.Clientset, *dynamic.DynamicClient, *discovery.DiscoveryClient) {
   var err error
   var config *rest.Config
+
   if os.Getenv("LOCAL") == "true" {
     config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
   } else {
@@ -34,6 +36,9 @@ func initClients() (*kubernetes.Clientset, *dynamic.DynamicClient, *discovery.Di
   if err != nil {
     panic(err.Error())
   }
+  config.QPS = 100
+  config.Burst = 200
+  config.Timeout = 30 * time.Second
   clientset, err := kubernetes.NewForConfig(config)
   if err != nil {
     panic(err.Error())

@@ -1,0 +1,9 @@
+package kustomization
+
+import (
+  "github.com/arldka/flammkuchen/components"
+)
+
+templ Kustomization(serverVersion string) {
+  @components.Layout(serverVersion)
+}

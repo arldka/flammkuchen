@@ -1,0 +1,15 @@
+package components 
+
+import (
+  "github.com/arldka/flammkuchen/internal/types"
+  "github.com/arldka/flammkuchen/components/objects"
+)
+
+templ Kustomization(serverVersion string, objList *types.Objects) {
+  @Layout(serverVersion) {
+  	<span class="font-semibold text-2xl">Generics</span>
+    for _, generic := range objList.Generics {
+      @objects.Generic(generic)
+    }
+  }
+}

@@ -1,17 +1,9 @@
 package components    
 
-import "github.com/arldka/flammkuchen/internal/types"
-
-templ Objectsss(kustomizations []types.Kustomization, helmreleases []types.HelmRelease) {
-	<div id="objects-list" class="bg-white p-4 rounded shadow-md">
-		for _, helmrelease := range helmreleases {
-			<div class="p-2 border-b border-gray-200">{ helmrelease.Name } { helmrelease.Namespace } { helmrelease.Status } { helmrelease.Age }</div>
-		}
-		for _, Kustomization := range kustomizations {
-			<div class="p-2 border-b border-gray-200">{ Kustomization.Name } { Kustomization.Namespace } { Kustomization.Status } { Kustomization.Age }</div>
-		}
-	</div>
-}
+import (
+  "fmt"
+  "github.com/arldka/flammkuchen/internal/types"
+)
 
 templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRelease) {
 	<div id="objects-list" class="bg-white p-4 rounded shadow-md">
@@ -45,11 +37,13 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
 		for _, kustomization := range kustomizations {
 			<div class="flex items-center justify-between p-2 border-b border-gray-200">
 				<div>
-					<span class="font-semibold">{ kustomization.Name }</span>
-					<span class="text-gray-500">/{ kustomization.Namespace }</span>
-					<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-						Kustomization
-					</span>
+          <a href={ templ.URL(fmt.Sprintf("/ks/%s/%s", kustomization.Name, kustomization.Namespace)) }>
+					  <span class="font-semibold">{ kustomization.Name }</span>
+					  <span class="text-gray-500">/{ kustomization.Namespace }</span>
+          </a>
+					  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+						  Kustomization
+					  </span>
 				</div>
 				<div class="text-sm">
 					if kustomization.Status == "Ready" {
