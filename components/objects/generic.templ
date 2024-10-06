@@ -5,10 +5,30 @@ import (
 )
 
 templ Generic(generic types.GenericObject) {
-  <div class="flex items-center justify-between p-2 border-b border-gray-200">
-    <div class="flex items-center">
-      <div class="text-xl font-medium text-gray-800">{generic.Name}</div>
-      <div class="text-sm text-gray-500 ml-2">{generic.Kind}</div>
+  <div class="bg-white p-4 rounded shadow-md">
+    <div class="flex items-center justify-between p-2 border-b border-gray-200">
+      <div>
+			  <span class="font-semibold test-lg">{ generic.Name }</span>
+			  <span class="text-gray-500 text-xs">/{ generic.Namespace }</span>
+			  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-blue-800">
+				  { generic.Kind }
+			  </span>
+      </div>
+      <div>
+        <span class="text-gray-500">{ generic.Age }</span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between p-2 border-b border-gray-50">
+      <div>
+        <span class="text-gray-500 text-xs">{ generic.APIGroup }/{generic.APIVersion}</span>
+      </div>
+      <div>
+        if generic.Status != "" {
+        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-purple-800">
+				  { generic.Status }
+			  </span>
+        }
+      </div>
     </div>
   </div>
 }
