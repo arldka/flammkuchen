@@ -3,16 +3,14 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-  "github.com/gorilla/mux"
 	"github.com/arldka/flammkuchen/services/resources"
   "github.com/arldka/flammkuchen/components"
   "github.com/arldka/flammkuchen/services/k8sclient"
 )
 
 func HandleKustomization(w http.ResponseWriter, r *http.Request) {
-  vars := mux.Vars(r)
-  namespace := vars["namespace"]
-  kustomizationName := vars["kustomizationName"]
+  namespace := r.PathValue("namespace")
+  kustomizationName := r.PathValue("kustomizationName")
 
   if namespace == "" || kustomizationName == "" {
         http.Error(w, "Missing namespace or kustomizationName", http.StatusBadRequest)
