@@ -10,8 +10,10 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
 		for _, helmrelease := range helmreleases {
 			<div class="flex items-center justify-between p-2 border-b border-gray-200">
 				<div>
-					<span class="font-semibold">{ helmrelease.Name }</span>
-					<span class="text-gray-500">/{ helmrelease.Namespace }</span>
+          <a href={ templ.URL(fmt.Sprintf("/hr/%s/%s", helmrelease.Name, helmrelease.Namespace)) }>
+            <span class="font-semibold">{ helmrelease.Name }</span>
+            <span class="text-gray-500">/{ helmrelease.Namespace }</span>
+          </a>
 					<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
 						HelmRelease
 					</span>
