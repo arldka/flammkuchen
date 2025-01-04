@@ -1,7 +1,6 @@
 package k8sclient
 
 import (
-	"os"
   "fmt"
   "time"
   "path/filepath"
@@ -28,10 +27,9 @@ func initClients() (*kubernetes.Clientset, *dynamic.DynamicClient, *discovery.Di
   var err error
   var config *rest.Config
 
-  if os.Getenv("LOCAL") == "true" {
+  config, err = rest.InClusterConfig()
+  if err != nil {
     config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-  } else {
-    config, err = rest.InClusterConfig()
   }
   if err != nil {
     panic(err.Error())

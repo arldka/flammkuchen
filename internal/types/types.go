@@ -38,6 +38,7 @@ type Objects struct {
 type GenericObject struct {
   Name string
   Namespace string
+  Labels map[string]string
   APIGroup string
   APIVersion string
   Kind string

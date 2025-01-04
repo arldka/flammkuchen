@@ -7,7 +7,7 @@ import (
 
 templ Kustomization(serverVersion string, objList *types.Objects) {
   @Layout(serverVersion) {
-  <div class="mb-5">
+  <div class="mt-4 mb-4">
     <span class="font-semibold text-2xl">Details</span>
   </div>
   <div>
@@ -16,7 +16,7 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
       @objects.Generic(generic)
     }
   </div>
-  <div class="mb-5">
+  <div class="mt-4 mb-4">
     if len(objList.RBACs) > 0 {
   	  <span class="font-semibold text-2xl">RBAC</span>
       for _, rbac := range objList.RBACs {
@@ -24,7 +24,7 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
       }
     }
   </div>
-  <div class="mb-5">
+  <div class="mt-4 mb-4">
     if len(objList.Workloads) > 0 {
       <span class="font-semibold text-2xl">Workloads</span>
       for _, workload := range objList.Workloads {
@@ -32,7 +32,7 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
       }
     }
   </div>
-  <div class="mb-5">
+  <div class="mt-4 mb-4">
     if len(objList.Networkings) > 0 {
       <span class="font-semibold text-2xl">Network</span>
       for _, networking := range objList.Networkings {
@@ -40,7 +40,7 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
       }
     }
   </div>
-  <div class="mb-5">
+  <div class="mt-4 mb-4">
     if len(objList.Fluxes) > 0 {
       <span class="font-semibold text-2xl">FluxCD</span>
       for _, flux := range objList.Fluxes {

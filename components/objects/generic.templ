@@ -5,30 +5,50 @@ import (
 )
 
 templ Generic(generic types.GenericObject) {
-  <div class="bg-white p-4 rounded shadow-md">
-    <div class="flex items-center justify-between p-2 border-b border-gray-200">
-      <div>
-			  <span class="font-semibold test-lg">{ generic.Name }</span>
-			  <span class="text-gray-500 text-xs">/{ generic.Namespace }</span>
-			  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-blue-800">
-				  { generic.Kind }
-			  </span>
-      </div>
-      <div>
-        <span class="text-gray-500">{ generic.Age }</span>
-      </div>
-    </div>
-    <div class="flex items-center justify-between p-2 border-b border-gray-50">
-      <div>
-        <span class="text-gray-500 text-xs">{ generic.APIGroup }/{generic.APIVersion}</span>
-      </div>
-      <div>
-        if generic.Status != "" {
-        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-purple-800">
-				  { generic.Status }
-			  </span>
-        }
-      </div>
-    </div>
+  <div class="card bg-gray-800 shadow-lg p-2 m-4">
+    <table class="table w-full table-fixed">
+      <thead>
+        <tr class="grid grid-cols-6">
+          <th class="col-span-1">Kind</th>
+          <th class="col-span-1"> 
+          if generic.Namespace != "" {
+          Namespace
+          }
+          </th>
+          <th class="col-span-1">Name</th>
+          <th class="col-span-1">APIVersion</th>
+          <th class="col-span-1">
+          if generic.Status != "" {
+          Status
+          }
+          </th>
+          <th class="col-span-1">Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="grid grid-cols-6">
+          <td class="col-span-1">
+            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-blue-800">{ generic.Kind }</span>
+          </td>
+          <td class="col-span-1">
+          if generic.Namespace != "" {
+            <div class="font-medium">{ generic.Namespace }</div> 
+          }
+          </td>
+          <td class="col-span-1">
+            <div class="font-medium">{ generic.Name }</div>
+          </td> 
+          <td class="col-span-1"> 
+            <span class="px-2 py-1 inline-flex text-[0.55rem] leading-5 font-semibold rounded-full bg-gray-100 text-gray-500">{ generic.APIGroup }/{ generic.APIVersion }</span>
+          </td> 
+          <td class="col-span-1">
+          if generic.Status != "" {
+              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-purple-800">{ generic.Status }</span>
+          }
+          </td> 
+          <td class="col-span-1">{ generic.Age }</td>
+        </tr>
+      </tbody>
+    </table> 
   </div>
 }
