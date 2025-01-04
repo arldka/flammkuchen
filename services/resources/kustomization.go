@@ -4,7 +4,7 @@ import (
 	"context"
 	// "fmt"
 	"github.com/arldka/flammkuchen/internal/types"
-  "github.com/arldka/flammkuchen/internal/utils"
+	"github.com/arldka/flammkuchen/internal/utils"
 	"github.com/arldka/flammkuchen/services/k8sclient"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -21,7 +21,7 @@ func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
 	kustomizations, _ := k8sclient.DynamicClient.Resource(kustomizationGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, kustomization := range kustomizations.Items {
 		meta := kustomization.Object["metadata"].(map[string]interface{})
-    relativeAge, _ := utils.RelativeTime(meta["creationTimestamp"].(string))
+		relativeAge, _ := utils.RelativeTime(meta["creationTimestamp"].(string))
 		conditions := kustomization.Object["status"].(map[string]interface{})["conditions"].([]interface{})
 		if strings.Contains(strings.ToLower(meta["name"].(string)), query) || strings.Contains(strings.ToLower(meta["namespace"].(string)), query) {
 			kustomizationList = append(kustomizationList, types.Kustomization{
@@ -47,7 +47,7 @@ func GetKustomizationInventory(namespace string, name string) (*types.Inventory,
 	if err != nil {
 		return nil, err
 	}
-	inventory := kustomization.Object["status"].(map[string]interface{})["inventory"].(interface{})
+	inventory := kustomization.Object["status"].(map[string]interface{})["inventory"]
 	var parsedEntries []types.Entry
 	if inventory != nil {
 		entries := inventory.(map[string]interface{})["entries"].([]interface{})

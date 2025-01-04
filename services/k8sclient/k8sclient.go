@@ -1,53 +1,53 @@
 package k8sclient
 
 import (
-  "fmt"
-  "time"
-  "path/filepath"
-  "k8s.io/client-go/tools/clientcmd"
-  "k8s.io/client-go/kubernetes"
-  "k8s.io/client-go/rest"
-  "k8s.io/client-go/dynamic"
-  "k8s.io/client-go/discovery"
+	"fmt"
+	"k8s.io/client-go/discovery"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
+	"path/filepath"
+	"time"
 )
 
 var (
-  Clientset *kubernetes.Clientset
-  DynamicClient *dynamic.DynamicClient
-  DiscoveryClient *discovery.DiscoveryClient
+	Clientset       *kubernetes.Clientset
+	DynamicClient   *dynamic.DynamicClient
+	DiscoveryClient *discovery.DiscoveryClient
 )
 
 func init() {
-  Clientset, DynamicClient, DiscoveryClient = initClients()
-  fmt.Println("K8s clients initialized")
+	Clientset, DynamicClient, DiscoveryClient = initClients()
+	fmt.Println("K8s clients initialized")
 }
 
 func initClients() (*kubernetes.Clientset, *dynamic.DynamicClient, *discovery.DiscoveryClient) {
-  var err error
-  var config *rest.Config
+	var err error
+	var config *rest.Config
 
-  config, err = rest.InClusterConfig()
-  if err != nil {
-    config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
-  }
-  if err != nil {
-    panic(err.Error())
-  }
-  config.QPS = 100
-  config.Burst = 200
-  config.Timeout = 30 * time.Second
-  clientset, err := kubernetes.NewForConfig(config)
-  if err != nil {
-    panic(err.Error())
-  }
-  dynamicClient, err := dynamic.NewForConfig(config)
-  if err != nil {
-    panic(err.Error())
-  }
-  discoveryClient, err := discovery.NewDiscoveryClientForConfig(config)
-  if err != nil {
-    panic(err.Error())
-  }
-  return clientset, dynamicClient, discoveryClient
+	config, err = rest.InClusterConfig()
+	if err != nil {
+		config, err = clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	}
+	if err != nil {
+		panic(err.Error())
+	}
+	config.QPS = 100
+	config.Burst = 200
+	config.Timeout = 30 * time.Second
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		panic(err.Error())
+	}
+	dynamicClient, err := dynamic.NewForConfig(config)
+	if err != nil {
+		panic(err.Error())
+	}
+	discoveryClient, err := discovery.NewDiscoveryClientForConfig(config)
+	if err != nil {
+		panic(err.Error())
+	}
+	return clientset, dynamicClient, discoveryClient
 }

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/arldka/flammkuchen/components"
 	"github.com/arldka/flammkuchen/services/k8sclient"
 	"github.com/arldka/flammkuchen/services/resources"
@@ -26,5 +27,8 @@ func HandleKustomization(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No objects found", http.StatusNotFound)
 	}
 	serverVersion, _ := k8sclient.DiscoveryClient.ServerVersion()
-	components.Kustomization(serverVersion.String(), objects).Render(r.Context(), w)
+	err := components.Kustomization(serverVersion.String(), objects).Render(r.Context(), w)
+	if err != nil {
+		fmt.Printf("Error rendering Kustomization:%v\n", err)
+	}
 }

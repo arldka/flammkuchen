@@ -25,7 +25,7 @@ func FilteredListHelmReleases(query string) ([]types.HelmRelease, error) {
 	helmreleases, _ := k8sclient.DynamicClient.Resource(helmreleaseGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, helmrelease := range helmreleases.Items {
 		meta := helmrelease.Object["metadata"].(map[string]interface{})
-    relativeTime, _ := utils.RelativeTime(meta["creationTimestamp"].(string))
+		relativeTime, _ := utils.RelativeTime(meta["creationTimestamp"].(string))
 		conditions := helmrelease.Object["status"].(map[string]interface{})["conditions"].([]interface{})
 		if strings.Contains(strings.ToLower(meta["name"].(string)), query) || strings.Contains(strings.ToLower(meta["namespace"].(string)), query) {
 			helmreleaseList = append(helmreleaseList, types.HelmRelease{
@@ -43,7 +43,7 @@ func GetHelmReleaseInventory(namespace string, name string) (*types.Inventory, e
 	settings := cli.New()
 	actionConfig := new(action.Configuration)
 	if err := actionConfig.Init(settings.RESTClientGetter(), namespace, "secret", func(format string, v ...interface{}) {
-		fmt.Sprintf(format, v...)
+		fmt.Printf(format, v...)
 	}); err != nil {
 		return nil, err
 	}
