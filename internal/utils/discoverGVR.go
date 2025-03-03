@@ -1,12 +1,12 @@
 package utils
 
 import (
-  "github.com/arldka/flammkuchen/services/k8sclient"
-  "k8s.io/apimachinery/pkg/runtime/schema"
-  "fmt"
+	"fmt"
+	"github.com/arldka/flammkuchen/services/k8sclient"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func DiscoverGVR(kind string) (schema.GroupVersionResource, error) { 
+func DiscoverGVR(kind string) (schema.GroupVersionResource, error) {
 	apiGroups, err := k8sclient.DiscoveryClient.ServerGroups()
 	if err != nil {
 		return schema.GroupVersionResource{}, err

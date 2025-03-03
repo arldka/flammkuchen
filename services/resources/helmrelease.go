@@ -17,7 +17,7 @@ import (
 
 func FilteredListHelmReleases(query string) ([]types.HelmRelease, error) {
 	var helmreleaseList []types.HelmRelease
-	helmreleaseGVR , _ := utils.DiscoverGVR("HelmRelease")
+	helmreleaseGVR, _ := utils.DiscoverGVR("HelmRelease")
 	helmreleases, _ := k8sclient.DynamicClient.Resource(helmreleaseGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, helmrelease := range helmreleases.Items {
 		meta := helmrelease.Object["metadata"].(map[string]interface{})
