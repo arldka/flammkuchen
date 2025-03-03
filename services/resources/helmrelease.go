@@ -9,7 +9,6 @@ import (
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/cli"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/yaml"
 	"sort"
 	"strings"
@@ -18,11 +17,7 @@ import (
 
 func FilteredListHelmReleases(query string) ([]types.HelmRelease, error) {
 	var helmreleaseList []types.HelmRelease
-	helmreleaseGVR := schema.GroupVersionResource{
-		Group:    "helm.toolkit.fluxcd.io",
-		Version:  "v2",
-		Resource: "helmreleases",
-	}
+	helmreleaseGVR , _ := utils.DiscoverGVR("HelmRelease")
 	helmreleases, _ := k8sclient.DynamicClient.Resource(helmreleaseGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, helmrelease := range helmreleases.Items {
 		meta := helmrelease.Object["metadata"].(map[string]interface{})
@@ -47,11 +42,7 @@ func FilteredListHelmReleases(query string) ([]types.HelmRelease, error) {
 }
 
 func GetHelmRelease(name string, namespace string) (types.HelmRelease, error) {
-	helmreleaseGVR := schema.GroupVersionResource{
-		Group:    "helm.toolkit.fluxcd.io",
-		Version:  "v2",
-		Resource: "helmreleases",
-	}
+	helmreleaseGVR, _ := utils.DiscoverGVR("HelmRelease")
 	helmrelease, _ := k8sclient.DynamicClient.Resource(helmreleaseGVR).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	meta := helmrelease.Object["metadata"].(map[string]interface{})
 	conditions := helmrelease.Object["status"].(map[string]interface{})["conditions"].([]interface{})
@@ -75,7 +66,6 @@ func GetHelmRelease(name string, namespace string) (types.HelmRelease, error) {
 // func GetHelmReleaseInventory(namespace string, name string) (*types.Inventory, error) {
 // 	settings := cli.New()
 // 	actionConfig := new(action.Configuration)
-// 	if err := actionConfig.Init(settings.RESTClientGetter(), namespace, "secret", func(format string, v ...interface{}) {
 // 		fmt.Printf(format, v...)
 // 	}); err != nil {
 // 		return nil, err
@@ -159,7 +149,6 @@ func GetHelmReleaseInventory(namespace string, name string) (*types.Inventory, e
 			})
 		}
 	}
-	fmt.Println(parsedEntries)
 	return &types.Inventory{
 		Entries: parsedEntries,
 	}, nil

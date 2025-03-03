@@ -15,11 +15,7 @@ import (
 
 func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
 	var kustomizationList []types.Kustomization
-	kustomizationGVR := schema.GroupVersionResource{
-		Group:    "kustomize.toolkit.fluxcd.io",
-		Version:  "v1",
-		Resource: "kustomizations",
-	}
+	kustomizationGVR, _ := utils.DiscoverGVR("Kustomization")
 	kustomizations, _ := k8sclient.DynamicClient.Resource(kustomizationGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, kustomization := range kustomizations.Items {
 		meta := kustomization.Object["metadata"].(map[string]interface{})
@@ -44,11 +40,7 @@ func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
 }
 
 func GetKustomizationInventory(namespace string, name string) (*types.Inventory, error) {
-	kustomizationGVR := schema.GroupVersionResource{
-		Group:    "kustomize.toolkit.fluxcd.io",
-		Version:  "v1",
-		Resource: "kustomizations",
-	}
+	kustomizationGVR, _ := utils.DiscoverGVR("Kustomization")
 	kustomization, err := k8sclient.DynamicClient.Resource(kustomizationGVR).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 	if err != nil {
 		return nil, err
