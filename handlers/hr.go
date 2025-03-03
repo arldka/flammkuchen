@@ -28,7 +28,7 @@ func HandleHelmRelease(w http.ResponseWriter, r *http.Request) {
 	}
 	serverVersion, _ := k8sclient.DiscoveryClient.ServerVersion()
 
-  helmrelease, _ := resources.GetHelmRelease(helmReleaseName, namespace)
+	helmrelease, _ := resources.GetHelmRelease(helmReleaseName, namespace)
 
 	err := components.HelmRelease(helmrelease, serverVersion.String(), objects).Render(r.Context(), w)
 	if err != nil {

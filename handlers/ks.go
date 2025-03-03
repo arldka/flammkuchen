@@ -27,7 +27,7 @@ func HandleKustomization(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No objects found", http.StatusNotFound)
 	}
 	serverVersion, _ := k8sclient.DiscoveryClient.ServerVersion()
-  kustomization, _ := resources.GetKustomization(kustomizationName, namespace)
+	kustomization, _ := resources.GetKustomization(kustomizationName, namespace)
 
 	err := components.Kustomization(kustomization, serverVersion.String(), objects).Render(r.Context(), w)
 	if err != nil {

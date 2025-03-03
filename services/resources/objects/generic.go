@@ -30,12 +30,12 @@ func GetGeneric(entry types.Entry) *types.GenericObject {
 
 	objectStatus := generic.Object["status"]
 	var status = ""
-  var lastTransitionTime = ""
+	var lastTransitionTime = ""
 	if objectStatus != nil && objectStatus.(map[string]interface{})["conditions"] != nil {
 		conditions := objectStatus.(map[string]interface{})["conditions"].([]interface{})
 		if conditions[0].(map[string]interface{})["lastTransitionTime"] == nil {
 			status = "Unknown"
-      lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
+			lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
 
 		} else {
 			sort.SliceStable(conditions, func(i, j int) bool {
@@ -44,21 +44,21 @@ func GetGeneric(entry types.Entry) *types.GenericObject {
 				return timeI.After(timeJ)
 			})
 			status = conditions[0].(map[string]interface{})["type"].(string)
-      lastTransitionTime, err = utils.RelativeTime(conditions[len(conditions) - 1].(map[string]interface{})["lastTransitionTime"].(string))
-      if err != nil {
-        lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
-      }
-    }
+			lastTransitionTime, err = utils.RelativeTime(conditions[len(conditions)-1].(map[string]interface{})["lastTransitionTime"].(string))
+			if err != nil {
+				lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
+			}
+		}
 	} else {
-    lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
-  }
+		lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
+	}
 	return &types.GenericObject{
-		Name:       entry.Name,
-		Namespace:  entry.Namespace,
-		APIGroup:   entry.APIGroup,
-		APIVersion: entry.APIVersion,
-		Kind:       entry.Kind,
-		Status:     status,
-		LastTransitionTime:        lastTransitionTime,
+		Name:               entry.Name,
+		Namespace:          entry.Namespace,
+		APIGroup:           entry.APIGroup,
+		APIVersion:         entry.APIVersion,
+		Kind:               entry.Kind,
+		Status:             status,
+		LastTransitionTime: lastTransitionTime,
 	}
 }
