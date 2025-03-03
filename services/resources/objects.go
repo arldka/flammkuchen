@@ -1,11 +1,12 @@
 package resources
 
 import (
-	"github.com/arldka/flammkuchen/internal/types"
-	"github.com/arldka/flammkuchen/services/resources/objects"
 	"slices"
 	"strings"
 	"sync"
+
+	"github.com/arldka/flammkuchen/internal/types"
+	"github.com/arldka/flammkuchen/services/resources/objects"
 )
 
 var networking = []string{
@@ -44,7 +45,6 @@ func ObjectType(apiGroup string, kind string) string {
 	}
 }
 
-// Write a function to insert an item of any type into a list sorted by its .Name attribute.
 func InsertGenericObject(objectList []types.GenericObject, newObject types.GenericObject) []types.GenericObject {
 	index := 0
 	for i, g := range objectList {
@@ -61,6 +61,25 @@ func InsertGenericObject(objectList []types.GenericObject, newObject types.Gener
 		}
 	}
 	objectList = append(objectList[:index], append([]types.GenericObject{newObject}, objectList[index:]...)...)
+	return objectList
+}
+
+func InsertWorkloadObject(objectList []types.WorkloadObject, newObject types.WorkloadObject) []types.WorkloadObject {
+	index := 0
+	for i, g := range objectList {
+		if g.Kind == newObject.Kind {
+			if g.Name > newObject.Name {
+				index = i
+				break
+			}
+		} else {
+			if g.Kind > newObject.Kind {
+				index = i
+				break
+			}
+		}
+	}
+	objectList = append(objectList[:index], append([]types.WorkloadObject{newObject}, objectList[index:]...)...)
 	return objectList
 }
 
@@ -95,10 +114,10 @@ func GetObjects(inventory *types.Inventory) (*types.Objects, error) {
 					mu.Unlock()
 				}
 			case "workload":
-				object := objects.GetGeneric(entry)
+				object := objects.GetWorkload(entry)
 				if object != nil {
 					mu.Lock()
-					objectList.Workloads = InsertGenericObject(objectList.Workloads, *object)
+					objectList.Workloads = InsertWorkloadObject(objectList.Workloads, *object)
 					mu.Unlock()
 				}
 			case "flux":

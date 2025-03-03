@@ -4,14 +4,14 @@ type Kustomization struct {
 	Name      string
 	Namespace string
 	Status    string
-	Age       string
+	LastTransitionTime       string
 }
 
 type HelmRelease struct {
 	Name      string
 	Namespace string
 	Status    string
-	Age       string
+	LastTransitionTime       string
 }
 
 type Inventory struct {
@@ -30,7 +30,7 @@ type Objects struct {
 	Generics    []GenericObject
 	RBACs       []GenericObject
 	CRDs        []GenericObject
-	Workloads   []GenericObject
+	Workloads   []WorkloadObject
 	Fluxes      []GenericObject
 	Networkings []GenericObject
 }
@@ -38,10 +38,20 @@ type Objects struct {
 type GenericObject struct {
 	Name       string
 	Namespace  string
-	Labels     map[string]string
 	APIGroup   string
 	APIVersion string
 	Kind       string
 	Status     string
-	Age        string
+	LastTransitionTime        string
+}
+
+type WorkloadObject struct {
+  Name string
+  Namespace string
+  APIGroup string 
+  APIVersion string 
+  Kind string 
+  Details []string 
+  Status string 
+  LastTransitionTime string
 }

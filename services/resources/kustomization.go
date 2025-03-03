@@ -9,6 +9,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"strings"
+  "time"
+  "sort"
 )
 
 func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
@@ -21,21 +23,25 @@ func FilteredListKustomizations(query string) ([]types.Kustomization, error) {
 	kustomizations, _ := k8sclient.DynamicClient.Resource(kustomizationGVR).List(context.TODO(), metav1.ListOptions{})
 	for _, kustomization := range kustomizations.Items {
 		meta := kustomization.Object["metadata"].(map[string]interface{})
-		relativeAge, _ := utils.RelativeTime(meta["creationTimestamp"].(string))
 		conditions := kustomization.Object["status"].(map[string]interface{})["conditions"].([]interface{})
+    sort.SliceStable(conditions, func(i, j int) bool {
+		  timeI, _ := time.Parse(time.RFC3339, conditions[i].(map[string]interface{})["lastTransitionTime"].(string))
+			timeJ, _ := time.Parse(time.RFC3339, conditions[j].(map[string]interface{})["lastTransitionTime"].(string))
+			return timeI.After(timeJ)
+		})
+    status := conditions[0].(map[string]interface{})["type"].(string)
+    lastTransitionTime, _ := utils.RelativeTime(conditions[len(conditions) - 1].(map[string]interface{})["lastTransitionTime"].(string))
 		if strings.Contains(strings.ToLower(meta["name"].(string)), query) || strings.Contains(strings.ToLower(meta["namespace"].(string)), query) {
 			kustomizationList = append(kustomizationList, types.Kustomization{
 				Name:      meta["name"].(string),
 				Namespace: meta["namespace"].(string),
-				Status:    conditions[0].(map[string]interface{})["type"].(string),
-				Age:       relativeAge,
+				Status:    status,
+				LastTransitionTime:       lastTransitionTime,
 			})
 		}
 	}
 	return kustomizationList, nil
 }
-
-// create a function to retrieve the list of objects in the inventory of the kustomization object
 
 func GetKustomizationInventory(namespace string, name string) (*types.Inventory, error) {
 	kustomizationGVR := schema.GroupVersionResource{
@@ -68,4 +74,30 @@ func GetKustomizationInventory(namespace string, name string) (*types.Inventory,
 	return &types.Inventory{
 		Entries: parsedEntries,
 	}, nil
+}
+
+func GetKustomization(name string, namespace string) (types.Kustomization, error) {
+	kustomizationGVR := schema.GroupVersionResource{
+		Group:    "kustomize.toolkit.fluxcd.io",
+		Version:  "v1",
+		Resource: "kustomizations",
+	}
+  kustomization , _ := k8sclient.DynamicClient.Resource(kustomizationGVR).Namespace(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+  meta := kustomization.Object["metadata"].(map[string]interface{})
+  conditions := kustomization.Object["status"].(map[string]interface{})["conditions"].([]interface{})
+  sort.SliceStable(conditions, func(i, j int) bool {
+    timeI, _ := time.Parse(time.RFC3339, conditions[i].(map[string]interface{})["lastTransitionTime"].(string))
+    timeJ, _ := time.Parse(time.RFC3339, conditions[j].(map[string]interface{})["lastTransitionTime"].(string))
+    return timeI.After(timeJ)
+  })
+  status := conditions[0].(map[string]interface{})["type"].(string)
+  lastTransitionTime, _ := utils.RelativeTime(conditions[len(conditions) - 1].(map[string]interface{})["lastTransitionTime"].(string))
+  result := types.Kustomization{
+    Name:      meta["name"].(string),
+    Namespace: meta["namespace"].(string),
+    Status:    status,
+    LastTransitionTime:       lastTransitionTime,
+  }
+  return result, nil
+
 }

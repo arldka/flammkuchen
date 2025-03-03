@@ -48,16 +48,16 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><table class=\"table w-full table-fixed\"><thead><tr class=\"grid grid-cols-5\"><th class=\"col-span-1\">Kind</th><th class=\"col-span-1\">Namespace</th><th class=\"col-span-1\">Name</th><th class=\"col-span-1\">Age</th><th class=\"col-span-1\">Status</th></tr></thead> <tbody><tr class=\"grid grid-cols-5\"><td class=\"col-span-1\"><span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">HelmRelease</span></td><td class=\"col-span-1\"><div class=\"font-semibold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><table class=\"table w-full table-fixed\"><thead><tr class=\"grid grid-cols-5 text-gray-500\"><th class=\"col-span-1\">Kind</th><th class=\"col-span-1\">Namespace</th><th class=\"col-span-1\">Name</th><th class=\"col-span-1\">LastTransitionTime</th><th class=\"col-span-1\">Status</th></tr></thead> <tbody><tr class=\"grid grid-cols-5\"><td class=\"col-span-1\"><span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">HelmRelease</span></td><td class=\"col-span-1\"><div class=\"font-semibold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Namespace)
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Namespace)
 			if templ_7745c5c3_Err != nil {
 				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 31, Col: 68}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -79,9 +79,9 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.Age)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(helmrelease.LastTransitionTime)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 37, Col: 70}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 37, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -161,7 +161,7 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"><table class=\"table w-full table-fixed\"><thead><tr class=\"grid grid-cols-5 gap-4\"><th class=\"col-span-1\">Kind</th><th class=\"col-span-1\">Namespace</th><th class=\"col-span-1\">Name</th><th class=\"col-span-1\">Age</th><th class=\"col-span-1\">Status</th></tr></thead> <tbody><tr class=\"grid grid-cols-5 gap-4\"><td class=\"col-span-1\"><span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">Kustomization</span></td><td class=\"col-span-1\"><div class=\"font-semibold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"><table class=\"table w-full table-fixed\"><thead><tr class=\"grid grid-cols-5 gap-4 text-gray-400\"><th class=\"col-span-1\">Kind</th><th class=\"col-span-1\">Namespace</th><th class=\"col-span-1\">Name</th><th class=\"col-span-1\">LastTransitionTime</th><th class=\"col-span-1\">Status</th></tr></thead> <tbody><tr class=\"grid grid-cols-5 gap-4\"><td class=\"col-span-1\"><span class=\"px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800\">Kustomization</span></td><td class=\"col-span-1\"><div class=\"font-semibold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -192,9 +192,9 @@ func Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRele
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var12 string
-			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.Age)
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(kustomization.LastTransitionTime)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 89, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/objects.templ`, Line: 89, Col: 87}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {

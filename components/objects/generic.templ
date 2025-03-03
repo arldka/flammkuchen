@@ -6,23 +6,27 @@ import (
 
 templ Generic(generic types.GenericObject) {
   <div class="card bg-gray-800 shadow-lg p-2 m-4">
-    <table class="table w-full table-fixed">
+    <table class="table table-fixed">
       <thead>
-        <tr class="grid grid-cols-6">
+        <tr class="grid grid-cols-6 text-gray-400">
           <th class="col-span-1">Kind</th>
+          if generic.Kind == "CustomResourceDefinition" {
+            <th class="col-span-2">Name</th>
+          } else {
           <th class="col-span-1"> 
           if generic.Namespace != "" {
           Namespace
           }
           </th>
           <th class="col-span-1">Name</th>
+          }
           <th class="col-span-1">APIVersion</th>
           <th class="col-span-1">
           if generic.Status != "" {
           Status
           }
           </th>
-          <th class="col-span-1">Age</th>
+          <th class="col-span-1">LastTransitionTime</th>
         </tr>
       </thead>
       <tbody>
@@ -30,6 +34,11 @@ templ Generic(generic types.GenericObject) {
           <td class="col-span-1">
             <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-blue-800">{ generic.Kind }</span>
           </td>
+          if generic.Kind == "CustomResourceDefinition" {
+          <td class="col-span-2">
+            <div class="font-medium">{ generic.Name }</div>
+          </td>
+          } else {
           <td class="col-span-1">
           if generic.Namespace != "" {
             <div class="font-medium">{ generic.Namespace }</div> 
@@ -38,6 +47,7 @@ templ Generic(generic types.GenericObject) {
           <td class="col-span-1">
             <div class="font-medium">{ generic.Name }</div>
           </td> 
+          }
           <td class="col-span-1"> 
             <span class="px-2 py-1 inline-flex text-[0.55rem] leading-5 font-semibold rounded-full bg-gray-100 text-gray-500">{ generic.APIGroup }/{ generic.APIVersion }</span>
           </td> 
@@ -46,7 +56,7 @@ templ Generic(generic types.GenericObject) {
               <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-purple-800">{ generic.Status }</span>
           }
           </td> 
-          <td class="col-span-1">{ generic.Age }</td>
+          <td class="col-span-1">{ generic.LastTransitionTime }</td>
         </tr>
       </tbody>
     </table> 

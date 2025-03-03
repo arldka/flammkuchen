@@ -12,11 +12,11 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
         <a href={ templ.URL(fmt.Sprintf("/hr/%s/%s", helmrelease.Name, helmrelease.Namespace)) }>
           <table class="table w-full table-fixed">
             <thead>
-              <tr class="grid grid-cols-5">
+              <tr class="grid grid-cols-5 text-gray-500">
                 <th class="col-span-1">Kind</th>
                 <th class="col-span-1">Namespace</th>
                 <th class="col-span-1">Name</th>
-                <th class="col-span-1">Age</th>
+                <th class="col-span-1">LastTransitionTime</th>
                 <th class="col-span-1"> Status</th>
               </tr>
             </thead>
@@ -34,7 +34,7 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
                   <div class="font-semibold">{ helmrelease.Name }</div>
                 </td>
                 <td class="col-span-1">
-                  <div class="text-sm text-gray-500">{ helmrelease.Age }</div>
+                  <div class="text-sm text-gray-500">{ helmrelease.LastTransitionTime }</div>
                 </td>
                 <td class="col-span-1">
                   <div class="text-sm"> 
@@ -64,11 +64,11 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
 			  <a href={ templ.URL(fmt.Sprintf("/ks/%s/%s", kustomization.Name, kustomization.Namespace)) }>
           <table class="table w-full table-fixed">
             <thead>
-              <tr class="grid grid-cols-5 gap-4">
+              <tr class="grid grid-cols-5 gap-4 text-gray-400">
                 <th class="col-span-1">Kind</th>
                 <th class="col-span-1">Namespace</th>
                 <th class="col-span-1">Name</th>
-                <th class="col-span-1">Age</th>
+                <th class="col-span-1">LastTransitionTime</th>
                 <th class="col-span-1"> Status</th>
               </tr>
             </thead>
@@ -86,7 +86,7 @@ templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRel
                   <div class="font-semibold">{ kustomization.Name }</div>
                 </td>
                 <td class="col-span-1">
-                  <div class="text-sm text-gray-500">{ kustomization.Age }</div>
+                  <div class="text-sm text-gray-500">{ kustomization.LastTransitionTime }</div>
                 </td>
                 <td class="col-span-1">
                   <div class="text-sm"> 

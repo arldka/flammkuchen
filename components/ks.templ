@@ -3,17 +3,67 @@ package components
 import (
   "github.com/arldka/flammkuchen/internal/types"
   "github.com/arldka/flammkuchen/components/objects"
+  "time"
 )
 
-templ Kustomization(serverVersion string, objList *types.Objects) {
+templ Kustomization(kustomization types.Kustomization, serverVersion string, objList *types.Objects) {
   @Layout(serverVersion) {
-  <div class="mt-4 mb-4">
-    <span class="font-semibold text-2xl">Details</span>
+  <div class="text-center">
+    <div class="card bg-gray-800 shadow-lg p-2 m-2 border-1 border-blue-400"> 
+      <table class="table w-full table-fixed">
+          <thead>
+            <tr class="grid grid-cols-5 gap-4 text-gray-400">
+              <th class="col-span-1">Kind</th>
+              <th class="col-span-1">Namespace</th>
+              <th class="col-span-1">Name</th>
+              <th class="col-span-1">Status</th>
+              <th class="col-span-1">Last Refreshed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="grid grid-cols-5">
+              <td class="col-span-1">
+                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                    Kustomization
+                </span>
+              </td>
+              <td class="col-span-1">
+                <div class="font-semibold">{ kustomization.Namespace }</div>
+              </td>
+              <td class="col-span-1">
+                <div class="font-semibold">{ kustomization.Name }</div>
+              </td>
+              <td class="col-span-1">
+                <div class="text-sm"> 
+                  if kustomization.Status == "Ready" {
+                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      { kustomization.Status }
+                    </span>
+                  } else if kustomization.Status == "Progressing" {
+                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      { kustomization.Status }
+                    </span>
+                  } else {
+                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      { kustomization.Status }
+                    </span>
+                  }
+                </div>
+              </td>
+              <td class="col-span-1">
+                <div class="font-semibold">{ time.Now().Format(time.RFC850) }</div>
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
   </div>
   <div>
-  	<span class="font-semibold text-2xl">Generics</span>
-    for _, generic := range objList.Generics {
-      @objects.Generic(generic)
+    if len(objList.Generics) > 0 {
+      <span class="font-semibold text-2xl">Generics</span>
+      for _, generic := range objList.Generics {
+        @objects.Generic(generic)
+      }
     }
   </div>
   <div class="mt-4 mb-4">
@@ -28,7 +78,7 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
     if len(objList.Workloads) > 0 {
       <span class="font-semibold text-2xl">Workloads</span>
       for _, workload := range objList.Workloads {
-        @objects.Generic(workload)
+        @objects.Workload(workload)
       }
     }
   </div>
@@ -45,6 +95,14 @@ templ Kustomization(serverVersion string, objList *types.Objects) {
       <span class="font-semibold text-2xl">FluxCD</span>
       for _, flux := range objList.Fluxes {
         @objects.Generic(flux)
+      }
+    }
+  </div>
+  <div class="mt-4 mb-4">
+    if len(objList.CRDs) > 0 {
+      <span class="font-semibold text-2xl">CRDs</span>
+      for _, crd := range objList.CRDs {
+        @objects.Generic(crd)
       }
     }
   </div>

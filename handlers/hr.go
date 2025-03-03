@@ -27,7 +27,10 @@ func HandleHelmRelease(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No objects found", http.StatusNotFound)
 	}
 	serverVersion, _ := k8sclient.DiscoveryClient.ServerVersion()
-	err := components.HelmRelease(serverVersion.String(), objects).Render(r.Context(), w)
+
+  helmrelease, _ := resources.GetHelmRelease(helmReleaseName, namespace)
+
+	err := components.HelmRelease(helmrelease, serverVersion.String(), objects).Render(r.Context(), w)
 	if err != nil {
 		fmt.Printf("Error rendering HelmRelease:%v\n", err)
 	}
