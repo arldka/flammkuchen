@@ -3,6 +3,8 @@ release:
 
 version: 2
 
+builds: []
+
 docker_signs:
 - artifacts: all
   signature: "${artifact}.sig"
