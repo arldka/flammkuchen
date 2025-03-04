@@ -3,7 +3,9 @@ release:
 
 version: 2
 
-builds: []
+builds:
+  - id: linux
+    main: ./cmd/server
 
 docker_signs:
 - artifacts: all
