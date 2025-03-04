@@ -1,12 +1,14 @@
 module github.com/arldka/flammkuchen
 
-go 1.23.0
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.0
 
 require (
-	github.com/a-h/templ v0.2.793
+	github.com/a-h/templ v0.3.819
+	github.com/dustin/go-humanize v1.0.1
 	helm.sh/helm/v3 v3.16.4
+	k8s.io/api v0.32.0
 	k8s.io/apimachinery v0.32.0
 	k8s.io/client-go v0.32.0
 )
@@ -132,7 +134,6 @@ require (
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.32.0 // indirect
 	k8s.io/apiextensions-apiserver v0.32.0 // indirect
 	k8s.io/apiserver v0.32.0 // indirect
 	k8s.io/cli-runtime v0.32.0 // indirect

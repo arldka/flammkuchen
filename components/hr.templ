@@ -1,52 +1,110 @@
 package components 
 
 import (
-  "github.com/arldka/flammkuchen/internal/types"
-  "github.com/arldka/flammkuchen/components/objects"
+	"github.com/arldka/flammkuchen/components/objects"
+	"github.com/arldka/flammkuchen/internal/types"
+	"time"
 )
 
-templ HelmRelease(serverVersion string, objList *types.Objects) {
-  @Layout(serverVersion) {
-  <div class="mb-5">
-    <span class="font-semibold text-2xl">Details</span>
-  </div>
-  <div>
-  	<span class="font-semibold text-2xl">Generics</span>
-    for _, generic := range objList.Generics {
-      @objects.Generic(generic)
-    }
-  </div>
-  <div class="mb-5">
-    if len(objList.RBACs) > 0 {
-  	  <span class="font-semibold text-2xl">RBAC</span>
-      for _, rbac := range objList.RBACs {
-        @objects.Generic(rbac)
-      }
-    }
-  </div>
-  <div class="mb-5">
-    if len(objList.Workloads) > 0 {
-      <span class="font-semibold text-2xl">Workloads</span>
-      for _, workload := range objList.Workloads {
-        @objects.Generic(workload)
-      }
-    }
-  </div>
-  <div class="mb-5">
-    if len(objList.Networkings) > 0 {
-      <span class="font-semibold text-2xl">Network</span>
-      for _, networking := range objList.Networkings {
-        @objects.Generic(networking)
-      }
-    }
-  </div>
-  <div class="mb-5">
-    if len(objList.Fluxes) > 0 {
-      <span class="font-semibold text-2xl">FluxCD</span>
-      for _, flux := range objList.Fluxes {
-        @objects.Generic(flux)
-      }
-    }
-  </div>
-  }
+templ HelmRelease(helmrelease types.HelmRelease, serverVersion string, objList *types.Objects) {
+	@Layout(serverVersion) {
+		<div class="text-center">
+			<div class="card bg-gray-800 shadow-lg p-2 m-2 border-1 border-blue-400">
+				<table class="table w-full table-fixed">
+					<thead>
+						<tr class="grid grid-cols-5 gap-4 text-gray-400">
+							<th class="col-span-1">Kind</th>
+							<th class="col-span-1">Namespace</th>
+							<th class="col-span-1">Name</th>
+							<th class="col-span-1">Status</th>
+							<th class="col-span-1">Last Refreshed</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="grid grid-cols-5">
+							<td class="col-span-1">
+								<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+									HelmRelease
+								</span>
+							</td>
+							<td class="col-span-1">
+								<div class="font-semibold">{ helmrelease.Namespace }</div>
+							</td>
+							<td class="col-span-1">
+								<div class="font-semibold">{ helmrelease.Name }</div>
+							</td>
+							<td class="col-span-1">
+								<div class="text-sm">
+									if helmrelease.Status == "Ready" {
+										<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+											{ helmrelease.Status }
+										</span>
+									} else if helmrelease.Status == "Failed" {
+										<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+											{ helmrelease.Status }
+										</span>
+									} else {
+										<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+											{ helmrelease.Status }
+										</span>
+									}
+								</div>
+							</td>
+							<td class="col-span-1">
+								<div class="font-semibold">{ time.Now().Format(time.RFC850) }</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div>
+			if len(objList.Generics) > 0 {
+				<span class="font-semibold text-2xl">Generics</span>
+				for _, generic := range objList.Generics {
+					@objects.Generic(generic)
+				}
+			}
+		</div>
+		<div class="mb-5">
+			if len(objList.RBACs) > 0 {
+				<span class="font-semibold text-2xl">RBAC</span>
+				for _, rbac := range objList.RBACs {
+					@objects.Generic(rbac)
+				}
+			}
+		</div>
+		<div class="mb-5">
+			if len(objList.Workloads) > 0 {
+				<span class="font-semibold text-2xl">Workloads</span>
+				for _, workload := range objList.Workloads {
+					@objects.Workload(workload)
+				}
+			}
+		</div>
+		<div class="mb-5">
+			if len(objList.Networkings) > 0 {
+				<span class="font-semibold text-2xl">Network</span>
+				for _, networking := range objList.Networkings {
+					@objects.Generic(networking)
+				}
+			}
+		</div>
+		<div class="mb-5">
+			if len(objList.Fluxes) > 0 {
+				<span class="font-semibold text-2xl">FluxCD</span>
+				for _, flux := range objList.Fluxes {
+					@objects.Generic(flux)
+				}
+			}
+		</div>
+		<div class="mt-4 mb-4">
+			if len(objList.CRDs) > 0 {
+				<span class="font-semibold text-2xl">CRDs</span>
+				for _, crd := range objList.CRDs {
+					@objects.Generic(crd)
+				}
+			}
+		</div>
+	}
 }

@@ -6,13 +6,14 @@ import (
 	"github.com/arldka/flammkuchen/internal/types"
 	"github.com/arldka/flammkuchen/internal/utils"
 	"github.com/arldka/flammkuchen/services/k8sclient"
+	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sort"
 	"time"
 )
 
-func GetGeneric(entry types.Entry) *types.GenericObject {
+func GetWorkload(entry types.Entry) *types.WorkloadObject {
 	resource, err := utils.GetResourceFromGroupVersionKind(entry.APIGroup, entry.APIVersion, entry.Kind)
 	if err != nil {
 		fmt.Printf("Error Getting Resource:%v, API Group:%v, API Version:%v, Kind:%v\n", err, entry.APIGroup, entry.APIVersion, entry.Kind)
@@ -52,13 +53,46 @@ func GetGeneric(entry types.Entry) *types.GenericObject {
 	} else {
 		lastTransitionTime, _ = utils.RelativeTime(generic.Object["metadata"].(map[string]interface{})["creationTimestamp"].(string))
 	}
-	return &types.GenericObject{
+
+	images := getImages(entry)
+
+	return &types.WorkloadObject{
 		Name:               entry.Name,
 		Namespace:          entry.Namespace,
 		APIGroup:           entry.APIGroup,
 		APIVersion:         entry.APIVersion,
 		Kind:               entry.Kind,
+		Details:            images,
 		Status:             status,
 		LastTransitionTime: lastTransitionTime,
 	}
+}
+
+func getImages(entry types.Entry) []string {
+	var images []string
+
+	extractImages := func(containers []v1.Container) {
+		for _, container := range containers {
+			images = append(images, container.Image)
+		}
+	}
+
+	switch entry.Kind {
+	case "Deployment":
+		deployment, _ := k8sclient.Clientset.AppsV1().Deployments(entry.Namespace).Get(context.TODO(), entry.Name, metav1.GetOptions{})
+		extractImages(deployment.Spec.Template.Spec.Containers)
+	case "StatefulSet":
+		statefulset, _ := k8sclient.Clientset.AppsV1().StatefulSets(entry.Namespace).Get(context.TODO(), entry.Name, metav1.GetOptions{})
+		extractImages(statefulset.Spec.Template.Spec.Containers)
+	case "DaemonSet":
+		daemonset, _ := k8sclient.Clientset.AppsV1().DaemonSets(entry.Namespace).Get(context.TODO(), entry.Name, metav1.GetOptions{})
+		extractImages(daemonset.Spec.Template.Spec.Containers)
+	case "Job":
+		job, _ := k8sclient.Clientset.BatchV1().Jobs(entry.Namespace).Get(context.TODO(), entry.Name, metav1.GetOptions{})
+		extractImages(job.Spec.Template.Spec.Containers)
+	case "Cronjob":
+		cronjob, _ := k8sclient.Clientset.BatchV1().CronJobs(entry.Namespace).Get(context.TODO(), entry.Name, metav1.GetOptions{})
+		extractImages(cronjob.Spec.JobTemplate.Spec.Template.Spec.Containers)
+	}
+	return images
 }

@@ -1,0 +1,63 @@
+package objects
+
+import (
+  "github.com/arldka/flammkuchen/internal/types"
+  "fmt"
+  "os"
+  "strings"
+)
+
+templ Workload(workload types.WorkloadObject) {
+  <div>
+  <a href={ templ.URL(fmt.Sprintf("https://console.cloud.google.com/kubernetes/%s/%s/%s/%s/%s/details?project=%s", strings.ToLower(workload.Kind), os.Getenv("LOCATION"), os.Getenv("CLUSTER"), workload.Namespace, workload.Name, os.Getenv("PROJECT"))) } target="_blank" rel="noopener noreferrer">
+  <div class="card bg-gray-800 shadow-lg p-2 m-4 hover:border-2 hover:border-blue-500">
+    <table class="table w-full table-fixed">
+      <thead>
+        <tr class="grid grid-cols-8 text-gray-400">
+          <th class="col-span-1">Kind</th>
+          <th class="col-span-1"> 
+          Namespace
+          </th>
+          <th class="col-span-1">Name</th>
+          <th class="col-span-1">APIVersion</th>
+          <th class="col-span-2">Details</th>
+          <th class="col-span-1">
+          if workload.Status != "" {
+          Status
+          }
+          </th>
+          <th class="col-span-1">LastTransitionTime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="grid grid-cols-8">
+          <td class="col-span-1">
+            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-blue-800">{ workload.Kind }</span>
+          </td>
+          <td class="col-span-1">
+            <div class="font-medium">{ workload.Namespace }</div> 
+          </td>
+          <td class="col-span-1">
+            <div class="font-medium">{ workload.Name }</div>
+          </td> 
+          <td class="col-span-1"> 
+            <span class="px-2 py-1 inline-flex text-[0.55rem] leading-5 font-semibold rounded-full bg-gray-100 text-gray-500">{ workload.APIGroup }/{ workload.APIVersion }</span>
+          </td> 
+          <td class="col-span-2">
+            for _, detail := range workload.Details {
+            <p>{ detail }</p>
+            }
+          </td>
+          <td class="col-span-1">
+          if workload.Status != "" {
+              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-purple-800">{ workload.Status }</span>
+          }
+          </td>
+          <td class="col-span-1">{ workload.LastTransitionTime }</td>
+        </tr>
+      </tbody>
+    </table> 
+  </div>
+  </a>
+  </div>
+}

@@ -6,64 +6,110 @@ import (
 )
 
 templ Objects(kustomizations []types.Kustomization, helmreleases []types.HelmRelease) {
-	<div id="objects-list" class="bg-white p-4 rounded shadow-md">
+	<div id="objects-list" class="grid grid-cols-1 xl:grid-cols-2 gap-4 flex-grow">
 		for _, helmrelease := range helmreleases {
-			<div class="flex items-center justify-between p-2 border-b border-gray-200">
-				<div>
-          <a href={ templ.URL(fmt.Sprintf("/hr/%s/%s", helmrelease.Name, helmrelease.Namespace)) }>
-            <span class="font-semibold">{ helmrelease.Name }</span>
-            <span class="text-gray-500">/{ helmrelease.Namespace }</span>
-          </a>
-					<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-						HelmRelease
-					</span>
-				</div>
-				<div class="text-sm">
-					if helmrelease.Status == "Ready" {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-							{ helmrelease.Status }
-						</span>
-					} else if helmrelease.Status == "Failed" {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-							{ helmrelease.Status }
-						</span>
-					} else {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-							{ helmrelease.Status }
-						</span>
-					}
-					<span class="text-gray-500">{ helmrelease.Age }</span>
-				</div>
+			<div class="card bg-gray-800 shadow-lg p-2 m-4 hover:border-2 hover:border-blue-500">
+        <a href={ templ.URL(fmt.Sprintf("/hr/%s/%s", helmrelease.Name, helmrelease.Namespace)) }>
+          <table class="table w-full table-fixed">
+            <thead>
+              <tr class="grid grid-cols-5 text-gray-500">
+                <th class="col-span-1">Kind</th>
+                <th class="col-span-1">Namespace</th>
+                <th class="col-span-1">Name</th>
+                <th class="col-span-1">LastTransitionTime</th>
+                <th class="col-span-1"> Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="grid grid-cols-5">
+                <td class="col-span-1">
+                  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      HelmRelease
+                  </span>
+                </td>
+                <td class="col-span-1">
+                  <div class="font-semibold">{ helmrelease.Namespace }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="font-semibold">{ helmrelease.Name }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="text-sm text-gray-500">{ helmrelease.LastTransitionTime }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="text-sm"> 
+                    if helmrelease.Status == "Ready" {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        { helmrelease.Status }
+                      </span>
+                    } else if helmrelease.Status == "Failed" {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        { helmrelease.Status }
+                      </span>
+                    } else {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                        { helmrelease.Status }
+                      </span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </a>
 			</div>
 		}
 		for _, kustomization := range kustomizations {
-			<div class="flex items-center justify-between p-2 border-b border-gray-200">
-				<div>
-          <a href={ templ.URL(fmt.Sprintf("/ks/%s/%s", kustomization.Name, kustomization.Namespace)) }>
-					  <span class="font-semibold">{ kustomization.Name }</span>
-					  <span class="text-gray-500">/{ kustomization.Namespace }</span>
-          </a>
-					  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-						  Kustomization
-					  </span>
-				</div>
-				<div class="text-sm">
-					if kustomization.Status == "Ready" {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-							{ kustomization.Status }
-						</span>
-					} else if kustomization.Status == "Progressing" {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-orange-800">
-							{ kustomization.Status }
-						</span>
-					} else {
-						<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-							{ kustomization.Status }
-						</span>
-					}
-					<span class="text-gray-500">{ kustomization.Age }</span>
-				</div>
-			</div>
+      <div class="card bg-gray-800 shadow-lg p-2 m-4 hover:border-2 hover:border-blue-500">
+			  <a href={ templ.URL(fmt.Sprintf("/ks/%s/%s", kustomization.Name, kustomization.Namespace)) }>
+          <table class="table w-full table-fixed">
+            <thead>
+              <tr class="grid grid-cols-5 gap-4 text-gray-400">
+                <th class="col-span-1">Kind</th>
+                <th class="col-span-1">Namespace</th>
+                <th class="col-span-1">Name</th>
+                <th class="col-span-1">LastTransitionTime</th>
+                <th class="col-span-1"> Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="grid grid-cols-5 gap-4">
+                <td class="col-span-1">
+                  <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      Kustomization
+                  </span>
+                </td>
+                <td class="col-span-1">
+                  <div class="font-semibold">{ kustomization.Namespace }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="font-semibold">{ kustomization.Name }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="text-sm text-gray-500">{ kustomization.LastTransitionTime }</div>
+                </td>
+                <td class="col-span-1">
+                  <div class="text-sm"> 
+                    if kustomization.Status == "Ready" {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        { kustomization.Status }
+                      </span>
+                    } else if kustomization.Status == "Progressing" {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                        { kustomization.Status }
+                      </span>
+                    } else {
+                      <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                        { kustomization.Status }
+                      </span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </a>
+      </div>
 		}
 	</div>
 }
