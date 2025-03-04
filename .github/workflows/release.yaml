@@ -5,13 +5,13 @@ on:
     tags:
       - '*'
 
+permissions:
+  contents: write
+  packages: write
+  issues: write
+
 jobs:
   goreleaser:
-
-    permissions:
-      contents: write
-      packages: write
-      issues: write
 
     runs-on: ubuntu-latest
     steps:
