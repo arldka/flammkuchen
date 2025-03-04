@@ -1,6 +1,8 @@
 release:
   prerelease: auto
 
+version: 2
+
 docker_signs:
 - artifacts: all
   signature: "${artifact}.sig"
