@@ -26,8 +26,8 @@ docker_signs:
 
 dockers:
   - image_templates:
-    - "ghcr.io/arldka/{{ .ProjectName }}:latest"
-    - "ghcr.io/arldka/{{ .ProjectName }}:{{ .Summary }}"
+    # - "ghcr.io/arldka/{{ .ProjectName }}:latest"
+    # - "ghcr.io/arldka/{{ .ProjectName }}:{{ .Summary }}"
     - "arldka/{{ .ProjectName }}:latest"
     - "arldka/{{ .ProjectName }}:{{ .Summary }}"
     build_flag_templates:
