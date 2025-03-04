@@ -1,0 +1,58 @@
+release:
+  prerelease: auto
+
+docker_signs:
+- artifacts: all
+  signature: "${artifact}.sig"
+  certificate: "${artifact}-keyless.pem"
+  args: ["sign", "--output-signature", "${artifact}.sig", "-oidc-issuer=https://token.actions.githubusercontent.com", "--output-certificate", "${artifact}-keyless.pem", "${artifact}"]
+
+dockers:
+  -
+    image_templates:
+    - "ghcr.io/arldka/{{ .ProjectName }}:latest"
+    - "ghcr.io/arldka/{{ .ProjectName }}:{{ .Summary }}"
+    - "arldka/{{ .ProjectName }}:latest"
+    - "arldka/{{ .ProjectName }}:{{ .Summary }}"
+    build_flag_templates:
+    - "--pull"
+    - "--label=org.opencontainers.image.created={{.Date}}"
+    - "--label=org.opencontainers.image.name={{.ProjectName}}"
+    - "--label=org.opencontainers.image.description='Flammkuchen is a read-only UI for FluxCD'"
+    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+    - "--label=org.opencontainers.image.version={{.Version}}"
+    - "--label=org.opencontainers.image.source={{.GitURL}}"
+    - "--label=io.artifacthub.package.readme-url='https://raw.githubusercontent.com/arldka/flammkuchen/main/README.md'"
+
+changelog:
+  use: github
+  sort: asc
+
+  # Max commit hash length to use in the changelog.
+  #
+  # 0: use whatever the changelog implementation gives you
+  # -1: remove the commit hash from the changelog
+  # any other number: max length.
+  #
+  # Default: 0.
+  # Since: v1.11.2
+  abbrev: -1
+
+  groups:
+    - title: Features
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: 'Bug fixes'
+      regexp: '^.*?bug(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: Others
+      order: 999
+
+  filters:
+    # Commit messages matching the regexp listed here will be removed from
+    # the changelog
+    # Default is empty
+    exclude:
+      - '^docs:'
+      - typo
+      - (?i)foo
