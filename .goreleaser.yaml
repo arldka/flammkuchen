@@ -24,9 +24,7 @@ builds:
 
 docker_signs:
 - artifacts: all
-  signature: "${artifact}.sig"
-  certificate: "${artifact}-keyless.pem"
-  args: ["sign", "--output-signature", "${artifact}.sig", "--oidc-issuer=https://token.actions.githubusercontent.com" , "${artifact}"]
+  args: ["sign", "--output-signature", "${signature}", "--oidc-issuer=https://token.actions.githubusercontent.com" , "${artifact}@${digest}"]
 
 dockers:
   - image_templates:
