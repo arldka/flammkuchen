@@ -28,8 +28,7 @@ docker_signs:
   args: ["sign", "--output-signature", "${artifact}.sig", "-oidc-issuer=https://token.actions.githubusercontent.com", "--output-certificate", "${artifact}-keyless.pem", "${artifact}"]
 
 dockers:
-  -
-    image_templates:
+  - image_templates:
     - "ghcr.io/arldka/{{ .ProjectName }}:latest"
     - "ghcr.io/arldka/{{ .ProjectName }}:{{ .Summary }}"
     - "arldka/{{ .ProjectName }}:latest"
@@ -43,6 +42,7 @@ dockers:
     - "--label=org.opencontainers.image.version={{.Version}}"
     - "--label=org.opencontainers.image.source={{.GitURL}}"
     - "--label=io.artifacthub.package.readme-url='https://raw.githubusercontent.com/arldka/flammkuchen/main/README.md'"
+    dockerfile: Dockerfile.release
 
 changelog:
   use: github
