@@ -2,8 +2,6 @@ release:
   prerelease: auto
 
 env:
-  - GO111MODULE=on
-  - CGO_ENABLED=1
   - DOCKER_CLI_EXPERIMENTAL=enabled
   - COSIGN_YES=true
 
