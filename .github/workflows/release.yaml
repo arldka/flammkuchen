@@ -9,10 +9,15 @@ permissions:
   contents: write
   packages: write
   issues: write
+  id-token: write
 
 jobs:
   goreleaser:
-
+    permissions:
+      contents: write
+      packages: write
+      issues: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
